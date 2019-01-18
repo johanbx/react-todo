@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 function usage(){
 cat << EOF
 Usage: do <command>
@@ -15,7 +16,11 @@ EOF
 
 case $1 in
   dev)
-    docker-compose up
+    docker-compose up -d
+    docker-compose logs -f node
+  ;;
+  follow)
+    docker-compose logs -f node
   ;;
   prod)
     docker-compose -f docker-compose.yml -f docker-compose.production.yml up
@@ -24,9 +29,26 @@ case $1 in
     shift
     docker-compose run node npm i $@
   ;;
-  gatsby)
+  npm)
     shift
-    docker-compose run node ./node_modules/gatsby-cli/lib/index.js $@
+    docker-compose run node npm $@
+  ;;
+  ash)
+  if ! docker-compose exec node ash ; then
+    echo "Is your container running?"
+  fi
+  ;;
+  lint)
+    docker-compose run node npm run lint
+  ;;
+  clean)
+    docker-compose kill node
+  ;;
+  purge)
+    docker-compose down
+  ;;
+  flushredis)
+    docker-compose exec redis redis-cli flushall
   ;;
   *)
     usage
