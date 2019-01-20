@@ -6,6 +6,8 @@
   "rules": {
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "react/jsx-one-expression-per-line": false,
-    "no-nested-ternary": 1
+    "no-nested-ternary": 1,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0
   }
 }

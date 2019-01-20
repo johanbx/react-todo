@@ -1,14 +1,16 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import store from './store';
 
-import Profile from './Profile';
-import ProfileForm from './ProfileForm';
+import ProfileForm from './components/ProfileForm';
+import ProfileList from './components/ProfileList';
 
 const App = () => (
-  <div>
-    <div><Profile /></div>
+  <Provider store={store}>
     <div><ProfileForm /></div>
-  </div>
+    <div><ProfileList /></div>
+  </Provider>
 );
 
 export default hot(module)(App);

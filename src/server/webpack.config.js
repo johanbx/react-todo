@@ -7,6 +7,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 export default {
   mode: process.env.NODE_ENV,
   target: 'web',
+  devtool: 'source-map',
   entry: {
     app: [
       'react-hot-loader/patch',

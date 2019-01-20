@@ -18,7 +18,7 @@ const router = Router();
  * @route GET /profile/{name}
  * @param {Profile.model} name.path.required - Name of profile
  * @returns {Profile.model} 200 - Profile information
- * @returns {Error} 404 - Profile does not exist
+ * @returns {Error} 404 - Could not find profile
  * @returns {Error} 500 - Unexpected error
  */
 const getProfile = (req, res) => {
@@ -32,19 +32,19 @@ const getProfile = (req, res) => {
 };
 
 /**
- * @route DELETE /profile/{name}
- * @param {Profile.model} name.path.required - Name of profile
+ * @route DELETE /profile/{id}
+ * @param {Profile.model} id.path.required - Profile id
  * @returns 204 - Delete a profile
- * @returns {Error} 404 - Profile does not exist
+ * @returns {Error} 404 - Could not find profile to delete
  * @returns {Error} 500 - Unexpected error
  */
 const deleteProfile = (req, res) => {
-  const { name } = req.params;
-  Profile.deleteOne({ name }, (err, { deletedCount }) => (err
+  const { id } = req.params;
+  Profile.findOneAndDelete({ _id: id }, (err, { _id }) => (err
     ? res.json({ error: 'Failed to delete profile' }, 500)
-    : deletedCount === 1
+    : String(_id) === String(id)
       ? res.send(204)
-      : res.json({ error: 'Could not find profile' }, 404)
+      : res.json({ error: 'Could not find profile to delete' }, 404)
   ));
 };
 
@@ -72,7 +72,7 @@ const getProfiles = (req, res) => {
     : res.json(profiles)));
 };
 
-router.route('/:name').get(getProfile).delete(deleteProfile);
+router.route('/:id').get(getProfile).delete(deleteProfile);
 router.route('/').get(getProfiles).post(createProfile);
 
 export default router;
