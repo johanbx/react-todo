@@ -3,9 +3,12 @@ import {
 } from 'recompose';
 import { connect } from 'react-redux';
 import lstore from 'store';
+import _ from 'lodash';
 
 import { addProfile } from '../../store/actions';
 import ProfileForm from './ProfileForm';
+
+const updateLocalStorageForm = _.debounce(async form => lstore.set('ProfileForm.form', form), 500);
 
 const enhance = compose(
   connect(),
@@ -14,7 +17,7 @@ const enhance = compose(
     {
       setForm: ({ form }) => (name, value) => {
         const newForm = { ...form, [name]: value };
-        lstore.set('ProfileForm.form', newForm);
+        updateLocalStorageForm(newForm);
         return ({
           form: newForm,
         });
