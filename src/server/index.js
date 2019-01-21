@@ -29,11 +29,11 @@ app.use(webpackHotMiddleware(webpackCompiler));
 expressSwagger(app)({
   swaggerDefinition: {
     info: {
-      description: 'This is a sample server',
+      description: 'API calls for this project',
       title: 'Swagger',
       version: '1.0.0',
     },
-    host: 'localhost:3000',
+    host: `${process.env.HOST}:${process.env.PORT}`,
     basePath: '/api/v1',
     produces: [
       'application/json',

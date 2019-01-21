@@ -5,11 +5,16 @@ import store from './store';
 
 import ProfileForm from './components/ProfileForm';
 import ProfileList from './components/ProfileList';
+import ActiveProfile from './components/ActiveProfile';
 
 const App = () => (
   <Provider store={store}>
+    ProfileForm
     <div><ProfileForm /></div>
+    ProfileList
     <div><ProfileList /></div>
+    ActiveProfile
+    <div><ActiveProfile /></div>
   </Provider>
 );
 

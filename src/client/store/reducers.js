@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
-import { GET_PROFILES, DELETE_PROFILE, ADD_PROFILE } from './actions';
+import {
+  GET_PROFILES, DELETE_PROFILE, ADD_PROFILE, SET_ACTIVE_PROFILE,
+} from './actions';
 
 const profiles = (state = [], action) => {
   switch (action.type) {
@@ -14,6 +16,16 @@ const profiles = (state = [], action) => {
   }
 };
 
+const activeProfile = (state = 0, action) => {
+  switch (action.type) {
+    case SET_ACTIVE_PROFILE:
+      return action.id;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   profiles,
+  activeProfile,
 });

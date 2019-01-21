@@ -26,7 +26,8 @@
     "react-redux": "^6.0.0",
     "redis": "^2.8.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "store": "^2.0.12"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

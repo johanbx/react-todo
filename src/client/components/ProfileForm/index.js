@@ -1,16 +1,28 @@
 import {
-  withState, compose, withHandlers,
+  compose, withHandlers, withStateHandlers,
 } from 'recompose';
 import { connect } from 'react-redux';
+import lstore from 'store';
 
 import { addProfile } from '../../store/actions';
 import ProfileForm from './ProfileForm';
 
 const enhance = compose(
   connect(),
-  withState('form', 'setForm', { name: '' }),
+  withStateHandlers(
+    ({ form: (lstore.get('ProfileForm.form') || ({ name: '' })) }),
+    {
+      setForm: ({ form }) => (name, value) => {
+        const newForm = { ...form, [name]: value };
+        lstore.set('ProfileForm.form', newForm);
+        return ({
+          form: newForm,
+        });
+      },
+    },
+  ),
   withHandlers({
-    onChange: ({ form, setForm }) => e => setForm({ ...form, [e.target.name]: e.target.value }),
+    onChange: ({ setForm }) => e => setForm(e.target.name, e.target.value),
     onSubmit: ({ form, dispatch }) => (e) => {
       e.preventDefault();
       dispatch(addProfile(form));
