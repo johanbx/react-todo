@@ -3,3 +3,4 @@ services:
   node:
     environment:
       - NODE_ENV=production
+    command: npm run prod

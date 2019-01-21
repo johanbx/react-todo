@@ -4,9 +4,11 @@
   "description": "Todo app written in React",
   "main": "src/index.js",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node src/server/index.js --ignore src/client",
+    "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node src/server/index.js --ignore src/client --ignore src/server/dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/eslint --fix --cache './'"
+    "lint": "./node_modules/.bin/eslint --fix --cache './'",
+    "build": "./node_modules/.bin/webpack-cli --config './src/server/webpack.config.babel.js'",
+    "prod": "npm run build && npm run start"
   },
   "keywords": [
     "todo",
@@ -17,13 +19,14 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
-    "express": "^4.16.4",
+    "express": "^5.0.0-alpha.7",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.5",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
+    "react-router-dom": "^4.3.1",
     "redis": "^2.8.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
@@ -54,6 +57,7 @@
     "webpack-cli": "^3.2.1",
     "webpack-dev-middleware": "^3.5.1",
     "webpack-hot-middleware": "^2.24.3",
-    "webpack-livereload-plugin": "^2.2.0"
+    "webpack-livereload-plugin": "^2.2.0",
+    "write-file-webpack-plugin": "^4.5.0"
   }
 }

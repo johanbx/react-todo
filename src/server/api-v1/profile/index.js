@@ -24,10 +24,10 @@ const router = Router();
 const getProfile = (req, res) => {
   const { name } = req.params;
   Profile.findOne({ name }, (err, profile) => (err
-    ? res.json({ error: 'Failed to get profile' }, 500)
+    ? res.status(500).json({ error: 'Failed to get profile' })
     : profile
       ? res.json(profile)
-      : res.json({ error: 'Could not find profile' }, 404)
+      : res.status(404).json({ error: 'Could not find profile' })
   ));
 };
 
@@ -40,11 +40,11 @@ const getProfile = (req, res) => {
  */
 const deleteProfile = (req, res) => {
   const { id } = req.params;
-  Profile.findOneAndDelete({ _id: id }, (err, { _id }) => (err
+  Profile.findOneAndDelete({ _id: id }, (err, profile) => (err
     ? res.json({ error: 'Failed to delete profile' }, 500)
-    : String(_id) === String(id)
-      ? res.send(204)
-      : res.json({ error: 'Could not find profile to delete' }, 404)
+    : profile && String(profile._id) === String(id)
+      ? res.status(204).send()
+      : res.status(404).json({ error: 'Could not find profile to delete' })
   ));
 };
 
@@ -57,8 +57,8 @@ const deleteProfile = (req, res) => {
 const createProfile = async (req, res) => {
   const { name } = req.body;
   new Profile({ name }).save((err, profile) => (err
-    ? res.json({ error: 'Failed to create profile' }, 500)
-    : res.json(profile, 201)));
+    ? res.status(500).json({ error: 'Failed to create profile' })
+    : res.status(201).json(profile)));
 };
 
 /**
@@ -68,7 +68,7 @@ const createProfile = async (req, res) => {
  */
 const getProfiles = (req, res) => {
   Profile.find((err, profiles) => (err
-    ? res.json({ error: 'Failed to get profiles' }, 500)
+    ? res.status(500).json({ error: 'Failed to get profiles' })
     : res.json(profiles)));
 };
 

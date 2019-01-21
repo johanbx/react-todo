@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
@@ -5,8 +6,8 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import mongoose from 'mongoose';
 import expressSwagger from 'express-swagger-generator';
 
-import webpackConfig from './webpack.config';
-import redisClient from './redis-client';
+import webpackConfig from './webpack.config.babel';
+// import redisClient from './redis-client';
 import apiV1 from './api-v1';
 
 // DATABASE
@@ -21,9 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 // WEBPACK
-const webpackCompiler = webpack(webpackConfig);
-app.use(webpackMiddleware(webpackCompiler, { stats: 'errors-only' }));
-app.use(webpackHotMiddleware(webpackCompiler));
+if (process.env.NODE_ENV === 'development') {
+  const webpackCompiler = webpack(webpackConfig);
+  app.use(webpackMiddleware(webpackCompiler, { stats: 'errors-only' }));
+  app.use(webpackHotMiddleware(webpackCompiler));
+} else {
+  app.use(express.static(path.join(__dirname, 'dist')));
+}
 
 // API
 expressSwagger(app)({
@@ -56,6 +61,7 @@ expressSwagger(app)({
 app.use('/api/v1', apiV1);
 
 // ROUTES
+/*
 app.get('/store/:key', async (req, res) => {
   const { key } = req.params;
   const value = req.query;
@@ -68,7 +74,10 @@ app.get('/:key', async (req, res) => {
   const rawData = await redisClient.getAsync(key);
   return res.json(JSON.parse(rawData));
 });
+*/
+
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')));
 
 app.listen(process.env.PORT, () => console.log(
-  `Example app running in ${process.env.NODE_ENV} listening on port ${process.env.PORT}!`,
+  `Running ${process.env.NODE_ENV} on port ${process.env.PORT}`,
 ));
