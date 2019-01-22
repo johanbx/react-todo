@@ -10,7 +10,9 @@ const enhance = compose(
   connect(),
   withHandlers({
     deleteProfile: ({ dispatch, profile: { _id } }) => () => dispatch(deleteProfile(_id)),
-    setActive: ({ dispatch, profile: { _id } }) => () => dispatch(setActiveProfileAction(_id)),
+    setActive: ({ dispatch, profile }) => () => {
+      dispatch(setActiveProfileAction(profile._id));
+    },
   }),
 );
 
