@@ -5,6 +5,7 @@ import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import mongoose from 'mongoose';
 import expressSwagger from 'express-swagger-generator';
+import compression from 'compression';
 
 import webpackConfig from './webpack.config.babel';
 // import redisClient from './redis-client';
@@ -20,6 +21,9 @@ mongoose.connect(process.env.MONGODB_URL, {
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
+
+// COMPRESSION
+app.use(compression());
 
 // WEBPACK
 if (process.env.NODE_ENV === 'development') {
@@ -76,7 +80,7 @@ app.get('/:key', async (req, res) => {
 });
 */
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')));
+app.all('*', (req, res) => res.sendFile(path.join(__dirname, 'dist/index.html')));
 
 app.listen(process.env.PORT, () => console.log(
   `Running ${process.env.NODE_ENV} on port ${process.env.PORT}`,

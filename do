@@ -50,6 +50,11 @@ case $1 in
   flushredis)
     docker-compose exec redis redis-cli flushall
   ;;
+  stats)
+    if docker-compose exec node npm run stats:json && npm run stats:report ; then
+      open -a "Google Chrome" analyze/report.html
+    fi
+  ;;
   *)
     usage
     exit 1

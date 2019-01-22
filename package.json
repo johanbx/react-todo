@@ -1,14 +1,19 @@
 {
   "name": "todo",
+  "sideEffects": [
+    "*.css"
+  ],
   "version": "0.0.1",
   "description": "Todo app written in React",
   "main": "src/index.js",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node src/server/index.js --ignore src/client --ignore src/server/dist",
+    "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node src/server/index.js --ignore src/client --ignore src/server/dist --ignore analyze",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/.bin/eslint --fix --cache './'",
     "build": "./node_modules/.bin/webpack-cli --config './src/server/webpack.config.babel.js'",
-    "prod": "npm run build && npm run start"
+    "prod": "npm run build && npm run start",
+    "stats:json": "./node_modules/.bin/webpack-cli --config './src/server/webpack.config.babel.js' --profile --json > analyze/stats.json",
+    "stats:report": "./node_modules/.bin/webpack-bundle-analyzer analyze/stats.json -m static -r analyze/report.html"
   },
   "keywords": [
     "todo",
@@ -19,6 +24,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
+    "compression": "^1.7.3",
     "express": "^5.0.0-alpha.7",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.5",
@@ -30,7 +36,8 @@
     "redis": "^2.8.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "webpack-bundle-analyzer": "^3.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
